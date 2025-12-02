@@ -15,3 +15,6 @@ const getCollectionFn = (collection) => {
 
 
 export const budgetWise = getCollectionFn('budgetWise');
+
+export const budgets = getCollectionFn('budgets');
+
