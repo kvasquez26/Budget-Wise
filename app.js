@@ -6,12 +6,11 @@ import session from "express-session";
 import budgetRoutes from "./routes/budgetRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 import historyRoutes from "./routes/historyRoutes.js";
-import budgetFeatureRoutes from './routes/budgets.js';
+import budgetFeatureRoutes from "./routes/budgets.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import utilitiesRoutes from "./routes/utilitiesRoutes.js";
 import billsRoutes from "./routes/billRoutes.js";
 import transactionsRoutes from "./routes/transactions.js";
-
 
 const app = express();
 const PORT = 3000;
@@ -27,8 +26,12 @@ const hbs = exphbs.create({
     formatMoney: (amount) => {
       if (amount === undefined || amount === null || isNaN(amount)) return "";
       return Number(amount).toFixed(2);
-    }
-  }
+    },
+    calcPercent: (count, total) => {
+      if (!total || total === 0) return 0;
+      return Math.round((count / total) * 100);
+    },
+  },
 });
 
 app.engine("handlebars", hbs.engine);
@@ -66,17 +69,17 @@ app.use((req, res, next) => {
 });
 
 // ROUTES
-app.use("/", budgetRoutes);  // home page
-app.use("/", authRoutes);    // /login, /signup, /logout
+app.use("/", budgetRoutes); // home page
+app.use("/", authRoutes); // /login, /signup, /logout
 app.use("/", historyRoutes); // /history
-app.use('/budgets', budgetFeatureRoutes);
-app.use('/dashboard', dashboardRoutes);
-app.use('/utilities', utilitiesRoutes);
-app.use('/bills', billsRoutes);
+app.use("/budgets", budgetFeatureRoutes);
+app.use("/dashboard", dashboardRoutes);
+app.use("/utilities", utilitiesRoutes);
+app.use("/bills", billsRoutes);
 
-app.use('/', (req, res, next) => {
-  if (req.session.user && req.path === '/') {
-    return res.redirect('/dashboard');
+app.use("/", (req, res, next) => {
+  if (req.session.user && req.path === "/") {
+    return res.redirect("/dashboard");
   }
   next();
 });
