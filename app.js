@@ -11,6 +11,10 @@ import dashboardRoutes from "./routes/dashboardRoutes.js";
 import utilitiesRoutes from "./routes/utilities.js";
 import billsRoutes from "./routes/billRoutes.js";
 
+import billsRoutes from "./routes/bills.js";
+import transactionsRoutes from "./routes/transactions.js";
+
+
 const app = express();
 const PORT = 3000;
 
@@ -78,6 +82,9 @@ app.use('/', (req, res, next) => {
   }
   next();
 });
+
+app.use("/bills", billsRoutes);  // add/edit.list bills
+app.use("/transactions", transactionsRoutes);  //add/edit/delete transactions
 
 app.listen(PORT, () => {
   console.log(`Server is running at http://localhost:${PORT}`);
